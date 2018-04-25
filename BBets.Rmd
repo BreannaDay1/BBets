@@ -1,4 +1,9 @@
 ---
+output:
+  html_document: default
+  pdf_document: default
+---
+---
 title: "Brownlows Bets"
 author: "Put your name here!"
 date: "put the date here"
@@ -21,7 +26,26 @@ output: html_document: default
 #Profit Estimate
 
 <!--Explain and display the results of your method of coming up with the estimate of professor Brownlows betting!-->
+```{r}
+require(tigerstats)
+ansarray <- numeric()
+for (j in 1:100){
+brownProfit = 0
+bdays <- (1:365)
+for (i in 1:1137){
+students <- sample(bdays, 35, replace = TRUE)
+xx <- duplicated(students)
+WinLose <- sum(xx)
+if (WinLose >= 1) brownProfit = brownProfit + 1 else brownProfit = brownProfit - 2
+}
+ansarray[j]=brownProfit
+}
+hist(ansarray)
+favstats(ansarray)
+```
 
+
+That loop of total tests is repeated 100 times with profits assigned to an array called "ansarray." We found that the mean profit was $`r round(mean(ansarray))`. In other words, after making his birthday wager 1137 times, and then repeating that 100 more times, we estimate that the profit Professor Brownlow made was $`r round(mean(ansarray))`.
 
 # Confidence interval of Brownlows earning
 
@@ -31,4 +55,4 @@ output: html_document: default
 # Discussion and Conclusion
 
 <!--Discussion and conclusion here.  If professor Brownlow is consistantly making or losing money how could he change his payout so that his profits center on zero?  Also discuss what size his class should be in order to have his current scheme balance at zero profit.!-->
-In conclusion, by repeating Brownlow's 1137 wagers 100 times, we estimated an average profit of $`r round(mean(betarray))`. It is important to note that the number of students in the class, as well as the amount Brownlow wagered, influenced the earnings.
+In conclusion, by repeating Brownlow's 1137 wagers 100 times, we estimated an average profit of $`r round(mean(ansarray))`. It is important to note that the number of students in the class, as well as the amount Brownlow wagered, influenced the earnings.
